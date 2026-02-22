@@ -1,0 +1,82 @@
+/*
+Author: Pratyaksh Rai
+Date: 2026-01-26
+Time: 18:33:18
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pb push_back
+#define all(x) (x).begin(), (x).end()
+#define endl '\n' 
+#define YES cout << "YES\n"
+#define NO cout << "NO\n"
+#define vi vector<int>
+#define ff first
+#define ss second
+#define invec(v) for(int &i : v) cin >> i;
+// Common constants
+const int INF = 1e18;
+const int MOD = 1e9 + 7;
+
+// Common directions for grid problems
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+
+// Problem Statement
+/*
+
+*/
+
+// Small Observatins
+/*
+
+*/
+//Your attacks
+/*
+      agar sabhi neighbourhood cell pe jayenge 
+      vika pakdi jayegi jb coincide hoye  
+      uske liye vika ko kone me lana hoga 
+      
+
+      let vika is in kone me 
+      since all should move to neighbourhood 
+      if the neighbourhood is same as the others then she will get caught
+      how to say if it is same ? 
+      since all must hame to move   
+              let suppose there is a chess board ,  
+                      one must caught vika if they are on the same black or white cell , as last move me 
+                      dono hi same color pe chalenge ;
+*/
+// Hints From Code 
+/*  
+
+*/
+void Chal_Ja_Plz(){
+   int n,m,k;cin>>n>>m>>k;
+   int x,y;cin>>x>>y;
+   string ans="YES";
+   for(int i=0;i<k;i++){
+    int X,Y;cin>>X>>Y;
+    if((x+y)%2==(X+Y)%2)ans="NO";
+   }
+   cout<<ans<<endl;
+}
+ 
+int32_t main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+ 
+    int t; cin >> t;
+    while (t--) Chal_Ja_Plz();
+    return 0;
+}
+/*
+Three golden rules : 
+1.Every problem has a solution 
+2.Every problem has a simpler solution 
+3.Understand what the problem is point to 
+
+*/
