@@ -1,7 +1,7 @@
 /*
 Author: Pratyaksh Rai
-Date: 2026-02-21
-Time: 21:04:24
+Date: 2026-02-23
+Time: 18:18:07
 */
 
 #include<bits/stdc++.h>
@@ -45,48 +45,7 @@ void Chal_Ja_Plz(){
 /*
 Always try to optimize your approach
 */
-  int n,h,k;cin>>n>>h>>k;
-  vi arr(n);
-  invec(arr);
-  int ans=0;
-  int tot= accumulate(arr.begin(),arr.end(),0LL);
-  int qu=h/tot;
-  ans+=n*qu;ans+=qu*k;
-  h=h%tot;
-  if(h==0){
-    cout<<ans-k<<endl;
-    return;
-  }
-  vi prefix(n+1);
-  for(int i=0;i<n;i++)prefix[i+1]=prefix[i]+arr[i];
-  int idx=0;
-  vi mx(n),mn(n);
-  int M=arr[n-1];
-  mx[n-1]=M;
-  for(int i=n-1;i>=0;i--){
-    if(M<arr[i])M=arr[i];
-    mx[i]=M;
-  }
-  int N=arr[0];
-  mn[0]=N;
-  for(int i=0;i<n;i++){
-    if(N>arr[i])N=arr[i];
-    mn[i]=N;
-  }
-  int d=0;
-  for(int i=1;i<=n;i++){
-    if(prefix[i]>=h){
-      ans+=i;d=i;
-      break;
-    }
-  if(i<n) {if((prefix[i]+(mx[i]-mn[i-1]))>=h){
-      ans+=i;d=i;
-      break;}
-    }
-  }
-  cout<<ans<<endl;
-  // cout<<d<<endl;
-
+   
 }
  
 int32_t main(){

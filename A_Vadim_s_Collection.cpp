@@ -1,74 +1,61 @@
+/*
+Author: Pratyaksh Rai
+Date: 2026-02-24
+Time: 13:09:27
+*/
+
 #include<bits/stdc++.h>
 using namespace std;
 #define int long long
- 
- 
- 
-//Ye Question kyu nhi ho paya && uska future solution kya rakhoge
-/*
- 
- 
- 
- 
-*/
+#define pb push_back
+#define all(x) (x).begin(), (x).end()
+#define endl '\n' 
+#define YES cout << "YES\n"
+#define NO cout << "NO\n"
+#define vi vector<int>
+#define ff first
+#define ss second
+#define invec(v) for(int &i : v) cin >> i;
+// Common constants
+const int INF = 1e18;
+const int MOD = 1e9 + 7;
+
+// Common directions for grid problems
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+
 // Problem Statement
-
-//Question aasan hi hota hai bass uska ishara samajha 
-
 /*
 
-
 */
- 
+
 // Small Observatins
 /*
 
-
-
 */
- 
- 
 //Your attacks
 /*
- 
+
 */
- 
- 
 // Hints From Code 
 /*  
 
-
- 
 */
- 
- 
-// Learn form question
-/*
-
-
-
-*/
- 
- 
 void Chal_Ja_Plz(){
-   string s;cin>>s;
-   vector<char>arr;
-   for(int i=0;i<10;i++){
-    arr.push_back(s[i]);
+/*
+Always try to optimize your approach
+*/
+  string s;cin>>s;
+   string res="";
+   multiset<int>st;
+   for(char ch:s)st.insert(ch-'0');
+   for(int i=10;i>=1;i--){
+    auto it =st.lower_bound(i-1);
+    int val=*it;
+    st.erase(it);
+    res=res+to_string(val);
    }
-   int b[10]={0};
-   for(int i=0;i<10;i++){
-    b[s[i]-'0']++;
-   }
-   int idx=9;
-   for(int i=0;i<5;i++){
-    while(idx>=0&&idx<10&&b[idx]==0)idx--;
-    cout<<b[idx];b[idx]--;
-   }
-   for(int i=0;i<5;i++){
-    while(idx>=0&&idx<10&&b[idx]==0)idx
-   }
-
+   cout<<res<<endl;
 }
  
 int32_t main(){
@@ -80,3 +67,10 @@ int32_t main(){
     while (t--) Chal_Ja_Plz();
     return 0;
 }
+/*
+Three golden rules : 
+1.Every problem has a solution 
+2.Every problem has a simpler solution 
+3.Understand what the problem is point to 
+
+*/

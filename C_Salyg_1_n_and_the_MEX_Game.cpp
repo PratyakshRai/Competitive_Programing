@@ -1,7 +1,7 @@
 /*
 Author: Pratyaksh Rai
-Date: 2026-02-18
-Time: 21:14:49
+Date: 2026-03-23
+Time: 23:09:24
 */
 
 #include<bits/stdc++.h>
@@ -32,6 +32,11 @@ int dy[4] = {0, 0, 1, -1};
 // Small Observatins
 /*
 
+      
+
+
+
+
 */
 //Your attacks
 /*
@@ -45,24 +50,7 @@ void Chal_Ja_Plz(){
 /*
 Always try to optimize your approach
 */
-   int n;cin>>n;
-   vi ans;
-   int idx=0;
-   while(n!=0&&(n&(n-1))){
-    int t=1LL<<idx;
-    if(t&n){
-      n-=t;
-    ans.pb(n);
-    }
-    idx++;
-
-   }
-  while(n>0){
-    ans.pb(n);
-    n=n/2;
-  }
-   for(int i:ans)cout<<i<<" ";
-   cout<<endl;
+   
 }
  
 int32_t main(){

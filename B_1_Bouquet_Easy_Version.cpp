@@ -55,8 +55,8 @@ void Chal_Ja_Plz(){
     for(int c=0;c<=j-i;c++){
         if(m<c*arr[i])continue;
         int t=c*arr[i];
-        int p=min((m-t)/(arr[i]+1),l-j);
-        t+=p*(arr[i]+1);
+        int p=min((m-t)/(arr[j]),l-j);
+        t+=(p)*(arr[j]);
         ans=max(ans,t);
     
     }

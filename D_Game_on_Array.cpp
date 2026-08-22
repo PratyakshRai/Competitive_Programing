@@ -1,91 +1,234 @@
+/*
+    Author: Pratyaksh Rai
+    Date: 2026-06-29
+    Time: 11:25:39
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
-// ------------------- Typedefs -------------------
-typedef long long ll;
-typedef vector<int> vi;
-typedef vector<ll> vl;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
+// ========================================================================
+//                         PBDS (ORDERED SET) SETUP
+// ========================================================================
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 
-// ------------------- Macros ---------------------
-#define pb push_back
-#define all(x) (x).begin(), (x).end()
-#define ff first
-#define ss second
+// 1. UNIQUE SET
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> pbds_set;
 
-// ------------------- Constants ------------------
-const ll MOD = 1e9 + 7;
-const ll INF = 1e18;
+// 2. SAFE MULTISET (For duplicates, insert as {value, index})
+typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update> pbds_multiset;
 
-// ------------------- Debugger -------------------
-#ifndef ONLINE_JUDGE
-    #define debug(x...) cerr << "[" << #x << "] = ", _print(x)
-#else
-    #define debug(x...)
-#endif
+/* --- QUICK MANUAL ---
+ * bag.order_of_key(k)    -> Count of elements strictly smaller than 'k'.
+ * *bag.find_by_order(k)  -> Value at k-th position (0-indexed). 
+ * [Note: Use (*bag.find_by_order(k)).first for multiset]
+ */
 
-void _print(int x) { cerr << x << '\n'; }
-void _print(long x) { cerr << x << '\n'; }
-void _print(ll x) { cerr << x << '\n'; }
-void _print(unsigned x) { cerr << x << '\n'; }
-void _print(unsigned long x) { cerr << x << '\n'; }
-void _print(unsigned long long x) { cerr << x << '\n'; }
-void _print(float x) { cerr << x << '\n'; }
-void _print(double x) { cerr << x << '\n'; }
-void _print(long double x) { cerr << x << '\n'; }
-void _print(char x) { cerr << '\'' << x << '\'' << '\n'; }
-void _print(const char *x) { cerr << '\"' << x << '\"' << '\n'; }
-void _print(const string &x) { cerr << '\"' << x << '\"' << '\n'; }
-void _print(bool x) { cerr << (x ? "true" : "false") << '\n'; }
+// ========================================================================
+//                              MACROS & TYPES
+// ========================================================================
+#define int             long long
+#define pb              push_back
+#define all(x)          (x).begin(), (x).end()
+#define endl            '\n'
+#define YES             cout << "YES\n"
+#define NO              cout << "NO\n"
+#define vi              vector<int>
+#define vp              vector<bool>
+#define ff              first
+#define ss              second
+#define setbits(x)      __builtin_popcountll(x)
+#define clz(x)          __builtin_clzll(x)
+#define ctz(x)          __builtin_ctzll(x)
+#define gcd(a, b)       __gcd(a, b)
+#define lcm(a, b)       (1ll*(a) * (b / gcd(a, b)))
+#define invec(v)        for(int &i : v) cin >> i;
+#define srt(v)          sort((v).begin(), (v).end())
+#define rsrt(v)         sort((v).rbegin(), (v).rend())
 
-template <typename T, typename V> void _print(const pair<T, V> &x) {
-    cerr << '{'; _print(x.first); cerr << ','; _print(x.second); cerr << '}';
+// ========================================================================
+//                         CONSTANTS & DIRECTIONS
+// ========================================================================
+const int INF = 1e18;
+const int MOD = 1e9 + 7;
+
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+int dx8[8] = {1, -1, 0, 0, 1, 1, -1, -1}; // Down, Up, Right, Left, D-R, D-L, U-R, U-L
+int dy8[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+
+// ========================================================================
+//                         DEBUGGING & CUSTOM STRUCTS
+// ========================================================================
+#define printv(v)       for(auto x : v) cout << x << " "; cout << endl;
+#define printmap(m)     for(auto x : m) cout << x.ff << " " << x.ss << endl;
+
+// Custom sort for pairs
+bool customsort(const pair<int, int>& a, const pair<int, int>& b) {
+    if (a.ff == b.ff) return a.ss < b.ss;
+    return a.ff > b.ff;
 }
-template <typename T> void _print(const T &x) {
-    cerr << '{'; bool first = true;
-    for (const auto &i : x) {
-        if (!first) cerr << ", ";
-        _print(i); first = false;
+
+// Anti-Hack Custom Hash for unordered_map
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        x += 0x9e3779b97f4a7c15; x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb; return x ^ (x >> 31);
     }
-    cerr << "}\n";
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+}; // Use: unordered_map<int, int, custom_hash> safe_map;
+
+// ========================================================================
+//                         MATH & NUMBER THEORY
+// ========================================================================
+// 1. Safe Square Root
+int sqr(int n) { int r=sqrtl(n); while((r+1)*(r+1)<=n)r++; while(r*r>n)r--; return r; }
+
+// 2. Fast Power modulo
+int binpow(int a, int b, int m = MOD) {
+    int res = 1; a %= m;
+    while (b > 0) { if (b & 1) res = (res * a) % m; a = (a * a) % m; b >>= 1; }
+    return res; 
 }
 
-// ------------------- Solve Function -------------
-void solve() {
-   int n ;
+// 3. Sieve of Eratosthenes (Call sieve() in main if needed)
+const int MAX_PRIME = 1e6 + 5;
+bool is__prime[MAX_PRIME];
+vi _prime;
+void sieve() {
+    memset(is__prime, true, sizeof(is__prime)); is__prime[0] = is__prime[1] = false;
+    for(int i=2; i*i<MAX_PRIME; i++) if(is__prime[i]) for(int j=i*i; j<MAX_PRIME; j+=i) is__prime[j] = false;
+    for(int i=2; i<MAX_PRIME; i++) if(is__prime[i]) _prime.pb(i);
+}
+
+// 4. Combinatorics (Call precompute_factorials() in main if needed)
+const int MAXF = 2e5 + 5;
+int fact[MAXF], invfact[MAXF];
+int modInverse(int n) { return binpow(n, MOD - 2); }
+void precompute_factorials() {
+    fact[0] = 1; invfact[0] = 1;
+    for(int i=1; i<MAXF; i++) fact[i] = (fact[i-1] * i) % MOD;
+    invfact[MAXF-1] = modInverse(fact[MAXF-1]);
+    for(int i=MAXF-2; i>=1; i--) invfact[i] = (invfact[i+1] * (i+1)) % MOD;
+}
+int nCr(int n, int r) {
+    if(r < 0 || r > n) return 0; 
+    return fact[n] * invfact[r] % MOD * invfact[n-r] % MOD;
+}
+
+// ========================================================================
+//                            PROBLEM LOGIC
+// ========================================================================
+/*
+  -> Small Observations:
+         
+
+  -> Your Attacks:
+         
+
+  -> Hints From Code:
+
+*/
+
+void Chal_Ja_Plz() {
+    // There is always a simpler solution for the question 
+     int n ;
    cin>>n;
-   vector<int>arr(n);
-   for(int i =0;i<n;i++)cin>>arr[i];
-   unordered_map<int, int> freq;
-for (int i = 0; i < n; i++) {
-    freq[arr[i]]++;
+   vector<int>a(n);
+  map<int,int>freq;
+  for(int i=0;i<n;i++){
+    cin>>a[i];
+    freq[a[i]]++;
+  }
+  int alice=0 ,bob=0;
+  vector<int>z;
+  for(auto it :freq){
+    alice+=it.ss*(it.ff/2);
+    bob+=it.ss*(it.ff/2);
+    if((it.ff)&1)z.pb(it.ss);  
+}
+rsrt(z);
+        for(int i=0;i<z.size();i++){
+            if(i%2==0)alice+=z[i];
+            else bob+=z[i];
+        }
+        cout<<alice<<" "<<bob<<endl;
+    
+
+//   set<pair<int,int>>st;
+//   for(auto it :freq){
+//     st.insert({it.ss,it.ff});
+//   }
+//   int bit=1;
+//   while(!st.empty()){
+//     auto it =prev(st.end());
+//     int f=it->first;
+//     int x=it->second;
+//     st.erase(it);
+//     auto curr=freq.find(x);
+//     if(curr==freq.begin()){
+//         if(bit){
+//             alice+=((x+1)/2)*f;
+//             bob+=(x/2)*f;
+//         }else {
+//             bob+=((x+1)/2)*f;
+//             alice+=(x/2)*f;
+//         }
+//         if(x&1){
+//             bit=1-bit;
+//         }
+//         freq.erase(curr);
+//     }
+//     else {
+//         auto prv=prev(curr);
+//         int y=prv->first;
+//         int vy=prv->second;
+//         int X=x-y;
+//           if(bit){
+//             alice+=((X+1)/2)*f;
+//             bob+=(X/2)*f;
+//         }else {
+//             bob+=((X+1)/2)*f;
+//             alice+=(X/2)*f;
+//         }
+//         if(X&1){
+//             bit=1-bit;
+//         }
+//         auto it2 = st.find({vy, y});
+// if(it2 != st.end())
+//     st.erase(it2);
+//         prv->second+=f;
+//         st.insert({prv->second,y});
+//         freq.erase(curr);
+//     }
+//   }
+//   cout<<alice<<" "<<bob<<endl;
 }
 
-
-cout<<alice<<" "<<bob<<"\n";
-
-}
-
-// ------------------- Main Function --------------
-int main() {
+// ========================================================================
+//                             MAIN FUNCTION
+// ========================================================================
+int32_t main() {
     ios_base::sync_with_stdio(false);
-
-    // freopen("bcount.in", "r", stdin);  for ucaso problems , put the name of the .in which is given 
-   // freopen("bcount.out", "w", stdout);
-  
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);     // for local input
-    freopen("output.txt", "w", stdout);   // for local output
-    freopen("error.txt", "w", stderr);    // for debug output
-#endif
-    cin.tie(NULL);
-
-    int t = 1;
-    cin >> t;  // Uncomment if the problem has multiple test cases
-    while (t--) {
-        solve();
-    }
-
+    cin.tie(0); cout.tie(0);
+    
+    // Uncomment below lines if problem requires precomputation
+    // sieve(); 
+    // precompute_factorials();
+    
+    int t; cin >> t;
+    while (t--) Chal_Ja_Plz();
+    
     return 0;
 }
+/*
+Three golden rules: 
+1. Every problem has a solution 
+2. Every problem has a simpler solution 
+3. Understand what the problem is pointing to 
+*/

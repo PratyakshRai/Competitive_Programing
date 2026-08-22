@@ -1,0 +1,22 @@
+Common Mistakes : 
+
+
+1. ki jaha question paper setter ye chahta tha ki banda maths se cheeje khoje waha mai direct pattern nikal rha tha , so be carefull about that
+
+
+2. aur jaha direct pattern hota hai wha dry run nhi karta
+
+3. make mistakes list , non technical for now , like why your approaches goes in wrong direction 
+
+atleast from now :
+
+Date : 25/2/2026
+Mistakes: 
+1.https://codeforces.com/problemset/problem/1659/B 
+reason : didnt read the question properly
+          got the wrong idea 
+
+          what if i read the question correctly ? 
+          will i be ablt to solve this problem
+          
+          probably not ? 
