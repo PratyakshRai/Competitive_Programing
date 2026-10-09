@@ -140,22 +140,47 @@ Three golden rules:
   -> Hints From Code:
 
 */
-map<pair<int,int>, int> memo;
-    int fun(int i , int A , vector<int>&weight,int x, int curr){
-       if(A == ((1LL << weight.size()) - 1)) return 0;
-        int ans=1e9;
-        if(memo.count({A,curr}))return memo[{A,curr}];
-        for(int m=0;m<weight.size();m++){
-            if(!((A>>m)&1)){
-                if(curr+weight[m]<=x){
-                    ans=min(ans,fun(i+1,A|(1LL<<m),weight,x,curr+weight[m]));
-                }
-                else ans=min(ans,fun(i+1,A|(1LL<<m),weight,x,weight[m])+1);
-            }
-        }
-        return memo[{A,curr}]= ans;
+// map<pair<int,int>, int> memo;
+//     int fun(int i , int A , vector<int>&weight,int x, int curr){
+//        if(A == ((1LL << weight.size()) - 1)) return 0;
+//         int ans=1e9;
+//         if(memo.count({A,curr}))return memo[{A,curr}];
+//         for(int m=0;m<weight.size();m++){
+//             if(!((A>>m)&1)){
+//                 if(curr+weight[m]<=x){
+//                     ans=min(ans,fun(i+1,A|(1LL<<m),weight,x,curr+weight[m]));
+//                 }
+//                 else ans=min(ans,fun(i+1,A|(1LL<<m),weight,x,weight[m])+1);
+//             }
+//         }
+//         return memo[{A,curr}]= ans;
 
-    }
+//     }
+vector<pair<int,int>>dp;
+int n;vector<int>arr;
+         int k;
+        pair<int,int> fun(int mask){
+            if(mask==((1<<n)-1))return {1,0};
+
+            pair<int, int> ans={n,INF};
+            if(dp[mask]!=pair<int,int>{-1,-1})return dp[mask];
+            for(int i=0;i<n;i++){
+                if(mask&(1<<i))continue;
+                auto [ride, weight]=fun(mask|(1<<i));
+                if(weight+arr[i]<=k){
+                    weight+=arr[i];
+                }
+                else {
+                    ride++;
+                    weight=arr[i];
+                }
+                ans=min(ans,{ride,weight});
+            }
+            return dp[mask]= ans;
+
+        }
+
+
 
 void Chal_Ja_Plz() {
 /*
@@ -167,13 +192,13 @@ void Chal_Ja_Plz() {
        current idea kaam nhi kar rha to     
 */
 
-int N;
-         int x;cin>>N>>x;
-       
-            vector<int>weight(N);
-            invec(weight);
-            cout<<fun(0,0,weight,x,0)+1<<endl;
 
+cin>>n>>k;
+       dp.resize(1<<n,{-1,-1});
+    arr.resize(n);
+            invec(arr);
+            
+cout<<fun(0).ff<<endl;
 
 
 
