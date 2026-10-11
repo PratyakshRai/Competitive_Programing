@@ -6,7 +6,7 @@ Time: 23:08:58
 
 #include<bits/stdc++.h>
 using namespace std;
-#define int long long
+#define int long long 
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define endl '\n' 
@@ -17,7 +17,7 @@ using namespace std;
 #define ss second
 #define invec(v) for(int &i : v) cin >> i;
 // Common constants
-const int INF = 1e18;
+const int INF = 1e10;
 const int MOD = 1e9 + 7;
 
 // Common directions for grid problems
